@@ -1,0 +1,7 @@
+# secret file status
+.env
+cats.py
+test.py
+games_bot.py
+Packs
+logging_config_example
