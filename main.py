@@ -2,40 +2,25 @@ import asyncio
 import logging
 
 from aiogram import Bot, Dispatcher
-from aiogram.client.default import DefaultBotProperties
-from aiogram.enums import ParseMode
 from config.config import Config, load_config
 
 
-logger = logging.getLogger(__name__)
+async def main() -> None:
 
-async def main():
+    # Загружаем конфиг в переменную config
+    config: Config = load_config()
+    # Задаём базовую конфигурацию логирования
     logging.basicConfig(
-        level=logging.INFO,
-        format='%(filename)s:%(lineno)d #%(levelname)-8s '
-                '[%(asctime)s] - %(name)s - %(message)s'
+        level=logging.getLevelName(level=config.log.level),
+        format=config.log.format,
     )
-
-    logger.info('Starting bot')
-
-    path = r'd:/Python/Projects/Stepik_Boot/.env'
-    config: Config = load_config(path)
-    storage = ...
-
-    bot = Bot(
-        token=config.bot.token,
-        default=DefaultBotProperties(parse_mode=ParseMode.HTML)
-    )
+    # Инициализируем бот и диспетчер
+    bot = Bot(token=config.bot.token)
     dp = Dispatcher()
 
-    dp.workflow_data.update()
-
-    logger.info('Подключаем роутеры')
-    logger.info('Подключаем миддлвари')
-
+    # Пропускаем накопившиеся апдейты и запускаем polling
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
-
 
 
 if __name__=='__main__':

@@ -1,6 +1,7 @@
 # secret file status
 .env
 
+.idea
 .venv/
 .vscode/
 __pycache__/
