@@ -30,6 +30,9 @@ async def main():
 
     dp.workflow_data.update()
 
+    logger.info('Подключаем роутеры')
+    logger.info('Подключаем миддлвари')
+
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
