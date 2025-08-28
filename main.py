@@ -3,13 +3,15 @@ import logging
 
 from aiogram import Bot, Dispatcher
 from config.config import Config, load_config
+from handlers import other, user
 
-dp = Dispatcher()
 
-async def main(dp: Dispatcher) -> None:
+# Функция конфигурирования и запуска бота
+async def main():
 
     # Загружаем конфиг в переменную config
     config: Config = load_config()
+
     # Задаём базовую конфигурацию логирования
     logging.basicConfig(
         level=logging.getLevelName(level=config.log.level),
@@ -17,7 +19,11 @@ async def main(dp: Dispatcher) -> None:
     )
     # Инициализируем бот и диспетчер
     bot = Bot(token=config.bot.token)
-    # dp = Dispatcher()
+    dp = Dispatcher()
+
+    # Регистриуем роутеры в диспетчере
+    dp.include_router(user.router)
+    dp.include_router(other.router)
 
     # Пропускаем накопившиеся апдейты и запускаем polling
     await bot.delete_webhook(drop_pending_updates=True)
@@ -25,4 +31,4 @@ async def main(dp: Dispatcher) -> None:
 
 
 if __name__=='__main__':
-    asyncio.run(main(dp))
+    asyncio.run(main())
