@@ -4,8 +4,9 @@ import logging
 from aiogram import Bot, Dispatcher
 from config.config import Config, load_config
 
+dp = Dispatcher()
 
-async def main() -> None:
+async def main(dp: Dispatcher) -> None:
 
     # Загружаем конфиг в переменную config
     config: Config = load_config()
@@ -16,7 +17,7 @@ async def main() -> None:
     )
     # Инициализируем бот и диспетчер
     bot = Bot(token=config.bot.token)
-    dp = Dispatcher()
+    # dp = Dispatcher()
 
     # Пропускаем накопившиеся апдейты и запускаем polling
     await bot.delete_webhook(drop_pending_updates=True)
@@ -24,4 +25,4 @@ async def main() -> None:
 
 
 if __name__=='__main__':
-    asyncio.run(main())
+    asyncio.run(main(dp))
